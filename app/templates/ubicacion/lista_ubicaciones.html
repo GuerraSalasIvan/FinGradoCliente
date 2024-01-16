@@ -1,0 +1,12 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %} 
+<div>
+
+    {% for ubicacion in ubicacion_cubierta_deporte %}
+        <h1>Nombre: {{ ubicacion.calle }}</h1>
+    
+    {% endfor %}
+
+</div>
+{% endblock contenido %}

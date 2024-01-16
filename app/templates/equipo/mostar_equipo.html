@@ -1,0 +1,20 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %} 
+
+        <div class ="row">
+
+        {% for equipo in mostar_equipo %}
+
+                <div class="col-3 border mx-auto">
+                      {%include "equipo/equipo.html"%}
+                
+                </div>     
+                         
+        {% endfor %}
+
+        </div>
+
+{% endblock contenido %}
+
+    

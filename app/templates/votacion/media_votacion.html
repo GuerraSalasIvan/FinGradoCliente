@@ -1,0 +1,13 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %} 
+        {% for voto in  listar_votacion %}
+        
+        <div>
+                {% include "votacion/votacion.html" %}    
+        </div>
+
+        {% endfor %}
+            
+{% endblock contenido %}
+

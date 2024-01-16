@@ -1,0 +1,13 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %} 
+        {% for equipos in mostar_equipo %}
+            <div>
+                <h2>Nombre: {{ equipos.nombre }}</h2>     
+                <p>-----------------------------------------------------------------------</p>
+                <br>
+    
+            </div>
+        {% endfor %}
+{% endblock contenido %}
+
