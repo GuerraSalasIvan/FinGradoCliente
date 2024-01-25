@@ -1,7 +1,10 @@
 <nav>
     <ul>
 
-        
+        <form action="{% url 'equipo_busqueda_simple' %}" class="d-flex m-3" role="search" method="GET">
+            <input name="textoBusqueda" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-light btn-outline-dark" type="submit">Buscar</button>
+          </form>
 
     </ul>
 </nav>

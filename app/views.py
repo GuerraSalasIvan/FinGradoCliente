@@ -5,14 +5,14 @@ from django.shortcuts import render,redirect
 from .forms import *
 
 def equipos_lista_api(request):
-    headers = {'Authorization': 'Bearer 3yA3kw66iNkEQ5V8nO38P2Nke74E3V'}
+    headers = {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
     response = requests.get('http://127.0.0.1:8000/api/v1/equipos', headers=headers)
     equipos = response.json()
     return render(request, 'equipo/lista_equipos_api.html',{'equipos_mostrar':equipos})
 
 
 def crear_cabecera():
-    return {'Authorization': 'Bearer 3yA3kw66iNkEQ5V8nO38P2Nke74E3V'}
+    return {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
 
 def equipo_busqueda_simple(request):
     formulario = BusquedaequipoForm(request.GET)
@@ -20,7 +20,7 @@ def equipo_busqueda_simple(request):
     if formulario.is_valid():
         headers = crear_cabecera()
         response = requests.get(
-            'http://127.0.0.1:8000/api/v1/equipos/busqueda_simple',
+            'http://127.0.0.1:8000/api/v1/busqueda/equipo_simple',
             headers=headers,
             params=formulario.cleaned_data
         )
