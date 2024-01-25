@@ -5,9 +5,9 @@
 {% for equipos in equipos_mostrar %}
 <div>
     <h2>Nombre: {{ equipos.nombre }}</h2> 
-    <h5>Id: {{ equipos.id }}</h5> 
-    <h5>Deporte: {{ equipos.deporte }}</h5> 
     <h5>Capacidad: {{ equipos.capacidad }}</h5> 
+    <h5>Deporte: {{ equipos.deporte.deporte }}</h5> 
+    
     <br>
 
 {% endfor %}
