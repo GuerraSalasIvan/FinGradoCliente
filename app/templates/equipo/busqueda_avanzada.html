@@ -2,13 +2,20 @@
 
 {% block contenido %} 
 {% load bootstrap5 %}
-    <form action = "{% url 'equipo_buscar_avanzado' %}" method = "GET"> 
+    <form action = "{% url 'buscar_avanzado_equipo' %}" method = "GET"> 
         
         {% csrf_token %}
 
         <div class="mb-4">
             {% bootstrap_field formulario.textoBusqueda show_label=True %}
         </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.capacidad show_label=True %}
+        </div>
+
+        <button type="submit" class="btn btn-primary" >Enviar</button>
+
     </form>
 
 {% endblock contenido %}
