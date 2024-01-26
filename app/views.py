@@ -49,7 +49,7 @@ def buscar_avanzado_equipo(request):
             if(response.status_code == requests.codes.ok):
                 equipos = response.json()
                 return render(request, 'equipo/lista_equipos_api.html',
-                              {"formulario":equipos})
+                              {"equipos_mostrar":equipos})
             else: 
                 print(response.status_code)
                 response.raise_for_status()
@@ -59,8 +59,8 @@ def buscar_avanzado_equipo(request):
                 errores = response.json()
                 for error in errores:
                     formulario.add_error(error,errores[error])
-                return render(request, 'equipo/lista_equipos_api.html',
-                            {"formulario":equipos, "errores":errores})
+                return render(request, 'equipo/busqueda_avanzada.html',
+                            {"formulario":formulario, "errores":errores})
             else:
                 return mi_error_500(request)
             
