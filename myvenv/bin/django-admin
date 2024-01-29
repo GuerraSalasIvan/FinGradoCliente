@@ -1,4 +1,6 @@
-#!/home/alumnado/FinGradoCliente/myvenv/bin/python
+#!/bin/sh
+'''exec' "/home/ivan/Documentos/VisualCode Servidor/FinGradoCliente/myvenv/bin/python" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys
