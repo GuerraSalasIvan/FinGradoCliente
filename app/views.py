@@ -4,26 +4,15 @@ from django.shortcuts import render
 from django.shortcuts import render,redirect
 from .forms import *
 
-
-import requests
-import environ
-import os
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-
 def equipos_lista_api(request):
     headers = {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
-    response = requests.get('http://guerrasalasivan.pythonanywhere.com/api/v1/equipos', headers=headers)
+    response = requests.get('http://127.0.0.1:8000/api/v1/equipos', headers=headers)
     equipos = response.json()
     return render(request, 'equipo/lista_equipos_api.html',{'equipos_mostrar':equipos})
 
 
 def crear_cabecera():
-    return {'Authorization': 'Bearer '+env("TOKEN_ACCESO")}
-
+    return {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
 
 def equipo_busqueda_simple(request):
     formulario = BusquedaequipoForm(request.GET)
@@ -31,7 +20,7 @@ def equipo_busqueda_simple(request):
     if formulario.is_valid():
         headers = crear_cabecera()
         response = requests.get(
-            'http://guerrasalasivan.pythonanywhere.com/api/v1/busqueda/equipo_simple',
+            'http://127.0.0.1:8000/api/v1/busqueda/equipo_simple',
             headers=headers,
             params=formulario.cleaned_data
         )
@@ -53,7 +42,7 @@ def buscar_avanzado_equipo(request):
         try:
             headers = crear_cabecera()
             response = requests.get(
-                'http://guerrasalasivan.pythonanywhere.com/api/v1/equipos/busqueda_avanzada',
+                'http://127.0.0.1:8000/api/v1/equipos/busqueda_avanzada',
                 headers=headers,
                 params=formulario.data
             )
@@ -70,7 +59,7 @@ def buscar_avanzado_equipo(request):
                 errores = response.json()
                 for error in errores:
                     formulario.add_error(error,errores[error])
-                return render(request, 'equipo/busqueda_avanzada.html',
+                return render(request, 'equipo/lista_equipos_api.html',
                             {"formulario":formulario, "errores":errores})
             else:
                 return mi_error_500(request)
