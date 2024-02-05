@@ -1,0 +1,15 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %} 
+
+{% for ubicacion in ubicacion_mostrar %}
+<div>
+    <h2>Nombre: {{ ubicacion.nombre }}</h2> 
+    <h5>Capacidad: {{ ubicacion.capacidad }}</h5> 
+    <h5>Calle: {{ ubicacion.calle }}</h5> 
+    
+    <br>
+
+{% endfor %}
+
+{% endblock contenido %}

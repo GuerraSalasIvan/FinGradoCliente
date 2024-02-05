@@ -34,7 +34,7 @@ def equipo_busqueda_simple(request):
 from requests.exceptions import HTTPError
 
 
-
+#------------------------- Buscar avanzado equipo-------------------------
 def buscar_avanzado_equipo(request):
     if(len(request.GET) > 0):
         formulario = BusquedaAvanzadaEquipoForm(request.GET)
@@ -71,6 +71,49 @@ def buscar_avanzado_equipo(request):
     else:
         formulario = BusquedaAvanzadaEquipoForm(None)
     return render(request, 'equipo/busqueda_avanzada.html', {'formulario':formulario})
+
+#------------------------- Buscar avanzado ubicacion -------------------------
+def buscar_avanzado_ubicacion(request):
+    if(len(request.GET) > 0):
+        formulario = BusquedaAvanzadaUbicacionForm(request.GET)
+        
+        try:
+            headers = crear_cabecera()
+            response = requests.get(
+                'http://127.0.0.1:8000/api/v1/ubicacion/busqueda_avanzada',
+                headers=headers,
+                params=formulario.data
+            )
+            if(response.status_code == requests.codes.ok):
+                ubicacion = response.json()
+                return render(request, 'ubicacion/lista_ubicacion_api.html',
+                              {"ubicacion_mostrar":ubicacion})
+            else: 
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 'ubicacion/lista_ubicacion_api.html',
+                            {"formulario":formulario, "errores":errores})
+            else:
+                return mi_error_500(request)
+            
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+        
+    else:
+        formulario = BusquedaAvanzadaUbicacionForm(None)
+    return render(request, 'ubicacion/busqueda_avanzada.html', {'formulario':formulario})
+
+
+
+
+
     
     
     #Páginas de Error

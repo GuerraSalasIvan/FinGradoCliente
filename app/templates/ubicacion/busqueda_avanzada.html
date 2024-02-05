@@ -1,0 +1,25 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %} 
+{% load bootstrap5 %}
+    <form action = "{% url 'buscar_avanzado_ubicacion' %}" method = "GET"> 
+        
+        {% csrf_token %}
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.textoBusqueda show_label=True %}
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.capacidad show_label=True %}
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.calle show_label=True %}
+        </div>
+
+        <button type="submit" class="btn btn-primary" >Enviar</button>
+
+    </form>
+
+{% endblock contenido %}
