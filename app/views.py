@@ -112,6 +112,44 @@ def buscar_avanzado_ubicacion(request):
 
 
 
+#------------------------- Buscar avanzado perfil publico -------------------------
+def buscar_avanzado_perfil_publico(request):
+    if(len(request.GET) > 0):
+        formulario = BusquedaAvanzadaPerfil_PublicoForm(request.GET)
+        
+        try:
+            headers = crear_cabecera()
+            response = requests.get(
+                'http://127.0.0.1:8000/api/v1/perfil_publico/busqueda_avanzada',
+                headers=headers,
+                params=formulario.data
+            )
+            if(response.status_code == requests.codes.ok):
+                perfil_publico = response.json()
+                return render(request, 'perfil_publico/lista_perfil_publico_api.html',
+                              {"perfil_publico_mostrar":perfil_publico})
+            else: 
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 'perfil_publico/lista_perfil_publico_api.html',
+                            {"formulario":formulario, "errores":errores})
+            else:
+                return mi_error_500(request)
+            
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+        
+    else:
+        formulario = BusquedaAvanzadaPerfil_PublicoForm(None)
+    return render(request, 'perfil_publico/busqueda_avanzada.html', {'formulario':formulario})
+
 
 
     

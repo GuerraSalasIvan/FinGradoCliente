@@ -27,7 +27,9 @@ class BusquedaAvanzadaPerfil_PublicoForm(forms.Form):
             
     #Obtenemos los campos
     textoBusqueda = forms.CharField(required=False)
-    capacidad = forms.IntegerField(required=False)
+    
+    '''
+    
     
     def __init__(self, *args, **kwargs):
         
@@ -39,5 +41,6 @@ class BusquedaAvanzadaPerfil_PublicoForm(forms.Form):
             widget=forms.Select,
             required=True,
         )
+    '''
         
   
