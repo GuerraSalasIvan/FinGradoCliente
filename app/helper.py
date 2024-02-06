@@ -21,7 +21,7 @@ class helper:
     def obtener_ligas_select():
         response = requests.get('http://127.0.0.1:8000/api/v1/ligas')
         ligas = response.json()
-        lista_ligas = [("","Ninguno")]
+        lista_ligas = []
         cont = 1
         for liga in ligas:
             lista_ligas.append((cont,liga['liga']))
