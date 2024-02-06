@@ -42,5 +42,33 @@ class BusquedaAvanzadaPerfil_PublicoForm(forms.Form):
             required=True,
         )
     '''
+    
+class EquipoForm(forms.Form):
+    
+        nombre  = forms.CharField(label="Nombre del equipo",
+                                  required=True,
+                                  max_length=100)
         
-  
+        capacidad = forms.IntegerField(label="Capacidad")
+        
+        def __init__(self, *args, **kwargs):
+            super(EquipoForm, self).__init__(*args, **kwargs)
+            
+            deportesDisponibles = helper.obtener_deportes_select()
+            self.fields["deporte"] = forms.ChoiceField(
+                choices=deportesDisponibles,
+                widget=forms.Select,
+                required=True,
+            )
+            
+            ligaDisponibles = helper.obtener_ligas_select()
+            print(ligaDisponibles)
+            self.fields["liga"] = forms.ChoiceField(
+                choices=ligaDisponibles,
+                widget=forms.Select,
+                required=True,
+            )
+            
+            
+            
+            
