@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"name": "FinGradoCliente",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"workbench.colorTheme": "Monokai",
+		"workbench.preferredDarkColorTheme": "Monokai"
+	}
+}
