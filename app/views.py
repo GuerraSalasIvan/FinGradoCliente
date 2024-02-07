@@ -168,7 +168,7 @@ def crear_equipo(request):
                 data=json.dumps(datos)
             )
             if(response.status_code == requests.codes.ok):
-                return redirect("equipo_busqueda_simple")
+                return redirect("indice")
             else:
                 print(response.status_code)
                 response.raise_for_status()
