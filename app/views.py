@@ -191,6 +191,23 @@ def crear_equipo(request):
          formulario = EquipoForm(None)
     return render(request, 'equipo/crear.html',{"formulario":formulario})
 
+
+def equipo_eliminar(request, equipo_id):
+    try:
+        headers = crear_cabecera()
+        response = requests.delete(
+            'http://127.0.0.1:8000/api/v1/equipos/eliminar/'+str(equipo_id),
+            headers=headers,
+        )
+        if(response.status_code == requests.codes.ok):
+            return redirect("indice")
+        else:
+            print(response.status_code)
+            response.raise_for_status()
+    except Exception as err:
+        print(f'Ocurrió un error: {err}')
+        return mi_error_500(request)
+    return redirect('indice')
     
     
     #Páginas de Error
