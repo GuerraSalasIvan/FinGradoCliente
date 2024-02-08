@@ -153,6 +153,10 @@ def buscar_avanzado_perfil_publico(request):
 
 
 
+def equipo_obtener(request, equipo_id):
+    equipo = helper.obtener_equipo(equipo_id)
+    return render (request, 'equipo/equipo.html',{"equipo":equipo})
+
 def crear_equipo(request):
     if (request.method == "POST"):
         try:
@@ -191,6 +195,63 @@ def crear_equipo(request):
          formulario = EquipoForm(None)
     return render(request, 'equipo/crear.html',{"formulario":formulario})
 
+
+def equipo_editar(request, equipo_id):
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    equipo = helper.obtener_equipo(equipo_id)
+    formulario = EquipoForm(datosFormulario,
+                        initial={
+                            'id':equipo['id'],
+                            'nombre':equipo['nombre'],
+                            'deporte':[deporte['deporte'] for deporte in equipo['deporte']],
+                            'liga':[liga['liga'] for liga in equipo['liga']],
+                            'capacidad':equipo['capacidad'],
+                            'usuario':equipo['usuario'], # mirar esto (for ...)
+                            
+                        })
+    if (request.method == "POST"):
+        try:
+            formulario = EquipoForm(request.POST)
+            headers = crear_cabecera()
+            datos = request.POST.copy()
+            datos["usuarios"] = request.POST.getlist("usuarios")
+            datos["deporte"] = request.POST.getlist("deporte")
+            
+            response = requests.put(
+                'http://127.0.0.1:8000/api/v1/equipos/editar/'+str(equipo_id),
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("equipo_obtener",equipo_id=equipo_id)
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'equipo/actualizar.html',
+                            {"formulario":formulario,"equipo":equipo})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    return render(request, 'equipo/actualizar.html',{"formulario":formulario,"equipo":equipo})
+            
+        
+        
+        
 
 def equipo_eliminar(request, equipo_id):
     try:

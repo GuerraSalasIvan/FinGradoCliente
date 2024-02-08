@@ -4,6 +4,8 @@ from . import views
 
 urlpatterns = [
     path('', views.equipos_lista_api, name='indice'),
+    path('equipo/<int:equipo_id>', views.equipo_obtener, name='equipo_obtener'),
+    path('equipo/editar/<int:libro_id>',views.equipo_editar,name='equipo_editar'),
     path('equipo_busqueda_simple', views.equipo_busqueda_simple, name='equipo_busqueda_simple'),
     path('equipo/buscar_avanzado', views.buscar_avanzado_equipo, name='buscar_avanzado_equipo'),
     path('ubicacion/buscar_avanzado', views.buscar_avanzado_ubicacion, name='buscar_avanzado_ubicacion'),

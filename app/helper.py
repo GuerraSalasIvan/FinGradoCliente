@@ -28,3 +28,8 @@ class helper:
             cont = cont + 1
         return lista_ligas
     
+    def obtener_equipo(id):
+        response = requests.get('http://127.0.0.1:8000/api/v1/equipos/'+str(id))
+        equipo = response.json()
+        return equipo
+    
