@@ -208,8 +208,8 @@ def equipo_editar(request, equipo_id):
                         initial={
                             'id':equipo['id'],
                             'nombre':equipo['nombre'],
-                            'deporte':[deporte['deporte'] for deporte in equipo['deporte']],
-                            'liga':[liga['liga'] for liga in equipo['liga']],
+                            'deporte':equipo["deporte"]['id'],
+                            'liga':equipo["liga"]['id'],
                             'capacidad':equipo['capacidad'],
                             'usuario':equipo['usuario'], # mirar esto (for ...)
                             
@@ -250,9 +250,6 @@ def equipo_editar(request, equipo_id):
     return render(request, 'equipo/actualizar.html',{"formulario":formulario,"equipo":equipo})
             
         
-        
-        
-
 def equipo_eliminar(request, equipo_id):
     try:
         headers = crear_cabecera()
