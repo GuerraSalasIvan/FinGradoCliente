@@ -217,7 +217,7 @@ def equipo_editar(request, equipo_id):
     if (request.method == "POST"):
         try:
             formulario = EquipoForm(request.POST)
-            headers = crear_cabecera()
+            headers = {"Content-Type":"application/json"}
             datos = request.POST.copy()
             datos["usuarios"] = request.POST.getlist("usuarios")
             datos["deporte"] = request.POST.getlist("deporte")
