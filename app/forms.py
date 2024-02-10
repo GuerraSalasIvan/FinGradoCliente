@@ -70,5 +70,34 @@ class EquipoForm(forms.Form):
             )
             
             
+class UbicacionForm(forms.Form):
+    
+        nombre  = forms.CharField(label="Nombre Ubicacion",
+                                  required=True,
+                                  max_length=100)
+        
+        capacidad = forms.IntegerField(label="Capacidad")
+        
+        calle  = forms.CharField(label="Nombre de la calle",
+                                  required=True,
+                                  max_length=150)
+        
+        def __init__(self, *args, **kwargs):
+            super(UbicacionForm, self).__init__(*args, **kwargs)
+            
+            deportesDisponibles = helper.obtener_deportes_select()
+            self.fields["deporte"] = forms.ChoiceField(
+                choices=deportesDisponibles,
+                widget=forms.Select,
+                required=True,
+            )
+            
+            equipoDisponibles = helper.obtener_equipos_select()
+            self.fields["equipo"] = forms.ChoiceField(
+                choices=equipoDisponibles,
+                widget=forms.Select,
+                required=False,
+            )
+            
             
             

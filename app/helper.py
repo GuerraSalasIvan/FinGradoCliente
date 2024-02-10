@@ -28,6 +28,14 @@ class helper:
             cont = cont + 1
         return lista_ligas
     
+    def obtener_equipos_select():
+        response = requests.get('http://127.0.0.1:8000/api/v1/equipos')
+        equipos = response.json()
+        lista_equipos = [("","Ninguno")]
+        for equipo in equipos:
+            lista_equipos.append((equipo['id'],equipo['nombre']))
+        return lista_equipos
+    
     def obtener_equipo(id):
         response = requests.get('http://127.0.0.1:8000/api/v1/equipos/'+str(id))
         equipo = response.json()
