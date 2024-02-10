@@ -20,8 +20,4 @@ urlpatterns = [
     #----------------- PERFIL PUBLICO ---------------
     path('perfil_publico/buscar_avanzado', views.buscar_avanzado_perfil_publico, name='buscar_avanzado_perfil_publico'),
     
-<<<<<<< HEAD
-    
-=======
->>>>>>> refs/remotes/origin/main
 ]
