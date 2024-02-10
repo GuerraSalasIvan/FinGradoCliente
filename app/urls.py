@@ -16,6 +16,8 @@ urlpatterns = [
     
     #------------------- UBICACION ------------------
     path('ubicacion/buscar_avanzado', views.buscar_avanzado_ubicacion, name='buscar_avanzado_ubicacion'),
+    path('ubicacion/crear', views.crear_ubicacion, name='crear_ubicacion'),
+    
     
     #----------------- PERFIL PUBLICO ---------------
     path('perfil_publico/buscar_avanzado', views.buscar_avanzado_perfil_publico, name='buscar_avanzado_perfil_publico'),
