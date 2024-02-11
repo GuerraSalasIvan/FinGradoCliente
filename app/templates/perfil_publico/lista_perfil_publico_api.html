@@ -1,12 +1,12 @@
 {% extends "estructura/principal.html" %}
 
 {% block contenido %} 
+{% load bootstrap_icons %}
 
 {% for perfil_publico in perfil_publico_mostrar %}
 <div>
     <h2>Descripcion: {{ perfil_publico.descripcion }}</h2> 
     <h5>Lugar Favorito: {{ perfil_publico.lugar_fav }}</h5> 
-    <a href= "{% url 'perfil_publico_editar' perfil_publico.id %}"><i class="fa-solid fa-pencil"></i></a>
 
     <form action = "{% url 'perfil_publico_eliminar' perfil_publico.id %}" method = "post"> 
         {% csrf_token %}
