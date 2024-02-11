@@ -1,8 +1,4 @@
-{% extends "estructura/principal.html" %}
-
-{% block contenido %} 
-
-{% for perfil_publico in perfil_publico_mostrar %}
+{% load bootstrap_icons %}
 <div>
     <h2>Descripcion: {{ perfil_publico.descripcion }}</h2> 
     <h5>Lugar Favorito: {{ perfil_publico.lugar_fav }}</h5> 
@@ -14,8 +10,8 @@
             <span>{% bs_icon 'trash' %}</span>
         </button> 
     </form>
+    
+    <br>
     <br>
 
-{% endfor %}
-
-{% endblock contenido %}
+</div>

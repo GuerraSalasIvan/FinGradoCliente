@@ -18,6 +18,14 @@ class helper:
             lista_deportes.append((deporte['id'],deporte['deporte']))
         return lista_deportes
     
+    def obtener_usuarios_select():
+        response = requests.get('http://127.0.0.1:8000/api/v1/usuarios')
+        usuarios = response.json()
+        lista_usuarios = [("","Ninguno")]
+        for usuario in usuarios:
+            lista_usuarios.append((usuarios['id'],usuarios['rol']['first_name']))
+        return lista_usuarios
+    
     def obtener_ligas_select():
         response = requests.get('http://127.0.0.1:8000/api/v1/ligas')
         ligas = response.json()

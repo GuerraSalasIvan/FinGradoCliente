@@ -11,6 +11,18 @@ def equipos_lista_api(request):
     equipos = response.json()
     return render(request, 'equipo/lista_equipos_api.html',{'equipos_mostrar':equipos})
 
+def ubicacion_lista_api(request):
+    headers = {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
+    response = requests.get('http://127.0.0.1:8000/api/v1/ubicacion', headers=headers)
+    ubicacion = response.json()
+    return render(request, 'ubicacion/lista_ubicacion_api.html',{'ubicacion_mostrar':ubicacion})
+
+def perfil_publico_lista_api(request):
+    headers = {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
+    response = requests.get('http://127.0.0.1:8000/api/v1/perfil_publico', headers=headers)
+    perfil_publico = response.json()
+    return render(request, 'perfil_publico/lista_perfil_publico_api.html',{'perfil_publico_mostrar':perfil_publico})
+
 
 def crear_cabecera():
     return {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
@@ -246,7 +258,7 @@ def crear_ubicacion(request):
                 data=json.dumps(datos)
             )
             if(response.status_code == requests.codes.ok):
-                return redirect("indice")
+                return redirect("ubicacion")
             else:
                 print(response.status_code)
                 response.raise_for_status()
@@ -268,6 +280,23 @@ def crear_ubicacion(request):
     else:
          formulario = UbicacionForm(None)
     return render(request, 'ubicacion/crear.html',{"formulario":formulario})
+
+def ubicacion_eliminar(request, ubicacion_id):
+    try:
+        headers = crear_cabecera()
+        response = requests.delete(
+            'http://127.0.0.1:8000/api/v1/ubicacion/eliminar/'+str(ubicacion_id),
+            headers=headers,
+        )
+        if(response.status_code == requests.codes.ok):
+            return redirect("ubicacion")
+        else:
+            print(response.status_code)
+            response.raise_for_status()
+    except Exception as err:
+        print(f'Ocurrió un error: {err}')
+        return mi_error_500(request)
+    return redirect('ubicacion')
 
 
 #------------------------- Buscar avanzado perfil publico -------------------------
@@ -309,6 +338,61 @@ def buscar_avanzado_perfil_publico(request):
     return render(request, 'perfil_publico/busqueda_avanzada.html', {'formulario':formulario})
 
 
+def crear_perfil_publico(request):
+    if (request.method == "POST"):
+        try:
+            formulario = PerfilPublicoForm(request.POST)
+            headers = {"Content-Type":"application/json"}
+            
+            datos = formulario.data
+
+            
+            response = requests.post(
+                'http://127.0.0.1:8000/api/v1/perfil_publico/crear',
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("perfil_publico")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'perfil_publico/crear.html',
+                            {"formulario":formulario})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+        
+    else:
+         formulario = PerfilPublicoForm(None)
+    return render(request, 'perfil_publico/crear.html',{"formulario":formulario})
+
+
+def perfil_publico_eliminar(request, perfil_publico_id):
+    try:
+        headers = crear_cabecera()
+        response = requests.delete(
+            'http://127.0.0.1:8000/api/v1/perfil_publico/eliminar/'+str(perfil_publico_id),
+            headers=headers,
+        )
+        if(response.status_code == requests.codes.ok):
+            return redirect("perfil_publico")
+        else:
+            print(response.status_code)
+            response.raise_for_status()
+    except Exception as err:
+        print(f'Ocurrió un error: {err}')
+        return mi_error_500(request)
+    return redirect('perfil_publico')
     
     
     #Páginas de Error

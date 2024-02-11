@@ -99,5 +99,37 @@ class UbicacionForm(forms.Form):
                 required=False,
             )
             
+class PerfilPublicoForm(forms.Form):
+    
+        descripcion  = forms.CharField(label="descripcion",
+                                  required=True,
+                                  max_length=100)
+        
+        hitos_publicos  = forms.CharField(label="hitos publicos",
+                                  required=True,
+                                  max_length=100)
+
+        
+        deportes_fav  = forms.CharField(label="deporte favorito",
+                                  required=True,
+                                  max_length=150)
+        
+        def __init__(self, *args, **kwargs):
+            super(PerfilPublicoForm, self).__init__(*args, **kwargs)
+            
+            lugaresDisponibles = helper.obtener_lugares_select()
+            self.fields["lugar_fav"] = forms.ChoiceField(
+                choices=lugaresDisponibles,
+                widget=forms.Select,
+                required=True,
+            )
+            
+            usauriosDisponibles = helper.obtener_usuarios_select()
+            self.fields["usuarios"] = forms.ChoiceField(
+                choices=usauriosDisponibles,
+                widget=forms.Select,
+                required=True,
+            )
+            
             
             
