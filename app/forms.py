@@ -62,7 +62,6 @@ class EquipoForm(forms.Form):
             )
             
             ligaDisponibles = helper.obtener_ligas_select()
-            print(ligaDisponibles)
             self.fields["liga"] = forms.ChoiceField(
                 choices=ligaDisponibles,
                 widget=forms.Select,
@@ -136,5 +135,14 @@ class EquipoActualizarNombreForm(forms.Form):
                              required=True, 
                              max_length=100,
                              help_text="100 caracteres como máximo")
+    
+class UbicacionActualizarNombreForm(forms.Form):
+    nombre = forms.CharField(label="Nombre del PAbellon",
+                             required=True, 
+                             max_length=200,
+                             help_text="200 caracteres como máximo")
+    
+    
+
             
             

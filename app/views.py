@@ -379,6 +379,50 @@ def ubicacion_editar(request, ubicacion_id):
             return mi_error_500(request)
     return render(request, 'ubicacion/actualizar.html',{"formulario":formulario,"ubicacion":ubicacion})
 
+def ubicacion_editar_nombre(request,ubicacion_id):
+   
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    ubicacion = helper.obtener_ubicacion(ubicacion_id)
+    formulario = UbicacionActualizarNombreForm(datosFormulario,
+            initial={
+                'nombre': ubicacion['nombre'],
+            }
+    )
+    if (request.method == "POST"):
+        try:
+            formulario = UbicacionForm(request.POST)
+            headers = crear_cabecera()
+            datos = request.POST.copy()
+            response = requests.patch(
+                'http://127.0.0.1:8000/api/v1/ubicacion/editar/nombre/'+str(ubicacion_id),
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("ubicacion_mostrar",ubicacion_id=ubicacion_id)
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'ubicacion/actualizar_nombre.html',
+                            {"formulario":formulario,"ubicacion":ubicacion})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    return render(request, 'ubicacion/actualizar_nombre.html',{"formulario":formulario,"ubicacion":ubicacion})
+
 def ubicacion_eliminar(request, ubicacion_id):
     try:
         headers = crear_cabecera()
