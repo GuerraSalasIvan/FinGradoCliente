@@ -131,5 +131,10 @@ class PerfilPublicoForm(forms.Form):
                 required=True,
             )
             
+class EquipoActualizarNombreForm(forms.Form):
+    nombre = forms.CharField(label="Nombre del Equipo",
+                             required=True, 
+                             max_length=100,
+                             help_text="100 caracteres como máximo")
             
             
