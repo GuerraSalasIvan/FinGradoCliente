@@ -7,7 +7,7 @@ class helper:
         
         lista_lugares = [("","Ninguno")]
         for lugar in lugares:
-            lista_lugares.append((lugar['nombre'],lugar['calle']))
+            lista_lugares.append((lugar['id'],lugar['calle']))
         return lista_lugares
     
     def obtener_deportes_select():
@@ -23,7 +23,7 @@ class helper:
         usuarios = response.json()
         lista_usuarios = [("","Ninguno")]
         for usuario in usuarios:
-            lista_usuarios.append((usuarios['id'],usuarios['rol']['first_name']))
+            lista_usuarios.append((usuario['id'],usuario['rol']['first_name']))
         return lista_usuarios
     
     def obtener_ligas_select():
@@ -53,4 +53,9 @@ class helper:
         response = requests.get('http://127.0.0.1:8000/api/v1/ubicacion/'+str(id))
         ubicacion = response.json()
         return ubicacion
+    
+    def obtener_perfil_publico(id):
+        response = requests.get('http://127.0.0.1:8000/api/v1/perfil_publico/'+str(id))
+        perfil_publico = response.json()
+        return perfil_publico
     

@@ -281,6 +281,58 @@ def crear_ubicacion(request):
          formulario = UbicacionForm(None)
     return render(request, 'ubicacion/crear.html',{"formulario":formulario})
 
+def ubicacion_editar(request, ubicacion_id):
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    ubicacion = helper.obtener_ubicacion(ubicacion_id)
+    formulario = UbicacionForm(datosFormulario,
+                        initial={
+                            'id':ubicacion['id'],
+                            'nombre':ubicacion['nombre'],
+                            'capacidad':ubicacion['capacidad'],
+                            'deporte':ubicacion["deporte"],
+                            'equipo':ubicacion['equipo'], 
+                            
+                        })
+    if (request.method == "POST"):
+        try:
+            formulario = UbicacionForm(request.POST)
+            headers = {"Content-Type":"application/json"}
+            datos = request.POST.copy()
+            datos["equipo"] = request.POST.getlist("equipo")
+            datos["deporte"] = request.POST.getlist("deporte")
+            
+            response = requests.put(
+                'http://127.0.0.1:8000/api/v1/ubicacion/editar/'+str(ubicacion_id),
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("ubicacion_obtener",ubicacion_id=ubicacion_id)
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'ubicacion/actualizar.html',
+                            {"formulario":formulario,"ubicacion":ubicacion})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    return render(request, 'ubicacion/actualizar.html',{"formulario":formulario,"ubicacion":ubicacion})
+
 def ubicacion_eliminar(request, ubicacion_id):
     try:
         headers = crear_cabecera()
@@ -337,6 +389,10 @@ def buscar_avanzado_perfil_publico(request):
         formulario = BusquedaAvanzadaPerfil_PublicoForm(None)
     return render(request, 'perfil_publico/busqueda_avanzada.html', {'formulario':formulario})
 
+def perfil_publico_obtener(request, perfil_publico_id):
+    perfil_publico = helper.obtener_perfil_publico(perfil_publico_id)
+    return render (request, 'perfil_publico/perfil_publico.html',{"perfil_publico":perfil_publico})
+
 
 def crear_perfil_publico(request):
     if (request.method == "POST"):
@@ -375,6 +431,57 @@ def crear_perfil_publico(request):
     else:
          formulario = PerfilPublicoForm(None)
     return render(request, 'perfil_publico/crear.html',{"formulario":formulario})
+
+
+def perfil_publico_editar(request, perfil_publico_id):
+    
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    perfil_publico = helper.obtener_perfil_publico(perfil_publico_id)
+    formulario = PerfilPublicoForm(datosFormulario,
+                        initial={
+                            'id':perfil_publico['id'],
+                            'descripcion':perfil_publico['descripcion'],
+                            'deportes_fav':perfil_publico['deportes_fav'],
+                            'hitos_publicos':perfil_publico["hitos_publicos"],
+                            'lugar_fav':perfil_publico['lugar_fav'], 
+                            'usuarios':perfil_publico['usuarios'], 
+                        })
+    if (request.method == "POST"):
+        try:
+            formulario = PerfilPublicoForm(request.POST)
+            headers = {"Content-Type":"application/json"}
+            datos = request.POST.copy()
+            
+            response = requests.put(
+                'http://127.0.0.1:8000/api/v1/perfil_publico/editar/'+str(perfil_publico_id),
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("perfil_publico_obtener",perfil_publico_id=perfil_publico_id)
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'perfil_publico/actualizar.html',
+                            {"formulario":formulario,"perfil_publico":perfil_publico})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    return render(request, 'perfil_publico/actualizar.html',{"formulario":formulario,"perfil_publico":perfil_publico})
 
 
 def perfil_publico_eliminar(request, perfil_publico_id):
