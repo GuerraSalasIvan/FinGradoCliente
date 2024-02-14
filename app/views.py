@@ -153,7 +153,6 @@ def equipo_editar(request, equipo_id):
             headers = {"Content-Type":"application/json"}
             datos = request.POST.copy()
             datos["usuarios"] = request.POST.getlist("usuarios")
-            datos["deporte"] = request.POST.getlist("deporte")
             
             response = requests.put(
                 'http://127.0.0.1:8000/api/v1/equipos/editar/'+str(equipo_id),
