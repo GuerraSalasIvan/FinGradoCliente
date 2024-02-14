@@ -4,6 +4,8 @@ from .models import *
 from datetime import date
 import datetime
 from .helper import *
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 class BusquedaequipoForm(forms.Form):
     textoBusqueda = forms.CharField(required=True)
@@ -142,7 +144,19 @@ class UbicacionActualizarNombreForm(forms.Form):
                              max_length=200,
                              help_text="200 caracteres como máximo")
     
-    
+class RegistroForm(UserCreationForm): 
+    roles = (
+                                (2, 'jugador'),
+                                (3, 'entrenador'),
+            )   
+    rol = forms.ChoiceField(choices=roles)  
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2','rol')
+        
+class LoginForm(forms.Form):
+    usuario = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput())
 
             
             

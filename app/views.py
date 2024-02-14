@@ -589,6 +589,54 @@ def perfil_publico_eliminar(request, perfil_publico_id):
         print(f'Ocurrió un error: {err}')
         return mi_error_500(request)
     return redirect('perfil_publico')
+
+
+
+################################### REGISTRATIONS ###################################
+def registrar_usuario(request):
+    if (request.method == "POST"):
+        try:
+            formulario = RegistroForm(request.POST)
+            if(formulario.is_valid()):
+                headers =  {
+                            "Content-Type": "application/json" 
+                        }
+                response = requests.post(
+                    'http://127.0.0.1:8000/api/v1/registrar/usuario',
+                    headers=headers,
+                    data=json.dumps(formulario.cleaned_data)
+                )
+                
+                if(response.status_code == requests.codes.ok):
+                    usuario = response.json()
+                    token_acceso = helper.obtener_token_session(
+                            formulario.cleaned_data.get("username"),
+                            formulario.cleaned_data.get("password1")
+                            )
+                    request.session["usuario"]=usuario
+                    request.session["token"] = token_acceso
+                    redirect("index")
+                else:
+                    print(response.status_code)
+                    response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'registration/signup.html',
+                            {"formulario":formulario})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+            
+    else:
+        formulario = RegistroForm()
+    return render(request, 'registration/signup.html', {'formulario': formulario})
     
     
     #Páginas de Error

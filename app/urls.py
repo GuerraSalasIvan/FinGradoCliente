@@ -33,6 +33,11 @@ urlpatterns = [
     path('perfil_publico/editar/<int:perfil_publico_id>',views.perfil_publico_editar,name='perfil_publico_editar'),
     path('perfil_publico', views.perfil_publico_lista_api, name='perfil_publico'),
     
+    #----------------- SESION ---------------
+    path('registrar',views.registrar_usuario,name='registrar_usuario'),
+    path('login',views.login,name='login'),
+    path('logout',views.logout,name='logout'),
+    
     
     
 ]
