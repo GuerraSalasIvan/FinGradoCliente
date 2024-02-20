@@ -615,7 +615,7 @@ def registrar_usuario(request):
                             )
                     request.session["usuario"]=usuario
                     request.session["token"] = token_acceso
-                    redirect("index")
+                    redirect("indice")
                 else:
                     print(response.status_code)
                     response.raise_for_status()

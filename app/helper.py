@@ -59,3 +59,19 @@ class helper:
         perfil_publico = response.json()
         return perfil_publico
     
+    def obtener_token_session(usuario,password):
+        token_url = 'http://127.0.0.1:8000/oauth2/token/'
+        data = {
+            'grant_type': 'password',
+            'username': usuario,
+            'password': password,
+            'client_id': 'app',
+            'client_secret': 'app',
+        }
+        
+        response = requests.post(token_url, data=data)
+        respuesta = response.json()
+        if response.status_code==200:
+            return respuesta.get('access_token')
+        else:
+            raise Exception(respuesta.get("error_descripcion"))

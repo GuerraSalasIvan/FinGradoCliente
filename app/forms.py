@@ -148,11 +148,25 @@ class RegistroForm(UserCreationForm):
     roles = (
                                 (2, 'jugador'),
                                 (3, 'entrenador'),
-            )   
-    rol = forms.ChoiceField(choices=roles)  
+                            )   
+    generos = (
+        ('MAS','Masculino'),
+        ('FEM','Femenino'),
+        ('---','Sin_Asignar'),
+    )
+        
+    
+    
+    rol = forms.ChoiceField(choices=roles) 
+    
+    edad = forms.IntegerField(required=True)
+    
+    sexo = forms.ChoiceField(choices=generos)
+    
+    
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2','rol')
+        fields = ('username', 'email', 'password1', 'password2','rol', 'edad', 'sexo')
         
 class LoginForm(forms.Form):
     usuario = forms.CharField()
