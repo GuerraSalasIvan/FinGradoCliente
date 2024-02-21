@@ -1,8 +1,9 @@
 import requests
 
 class helper:
-    def obtener_lugares_select():
-        response = requests.get('http://127.0.0.1:8000/api/v1/ubicacion')
+    def obtener_lugares_select(request):
+        headers = {'Authorization': 'Bearer ' request.session["token"]}
+        response = requests.get('http://127.0.0.1:8000/api/v1/ubicacion',headers=headers)
         lugares = response.json()
         
         lista_lugares = [("","Ninguno")]
