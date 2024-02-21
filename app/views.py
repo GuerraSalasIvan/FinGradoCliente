@@ -639,6 +639,38 @@ def registrar_usuario(request):
     return render(request, 'registration/signup.html', {'formulario': formulario})
     
     
+def login(request):
+    if (request.method == "POST"):
+        formulario = LoginForm(request.POST)
+        try:
+            token_acceso = helper.obtener_token_session(
+                                formulario.data.get("usuario"),
+                                formulario.data.get("password")
+                                )
+            request.session["token"] = token_acceso
+            
+          
+            headers = {'Authorization': 'Bearer '+token_acceso} 
+            response = requests.get('http://127.0.0.1:8000/api/v1/usuario/token/'+token_acceso,headers=headers)
+            usuario = response.json()
+            request.session["usuario"] = usuario
+            
+            return  redirect("indice")
+        except Exception as excepcion:
+            print(f'Hubo un error en la petición: {excepcion}')
+            formulario.add_error("usuario",excepcion)
+            formulario.add_error("password",excepcion)
+            return render(request, 
+                            'registration/login.html',
+                            {"form":formulario})
+    else:  
+        formulario = LoginForm()
+    return render(request, 'registration/login.html', {'form': formulario})
+
+def logout(request):
+    del request.session['token']
+    return redirect('indice')
+    
     #Páginas de Error
 def mi_error_404(request,exception=None):
     return render(request, 'errores/404.html',None,None,404)
