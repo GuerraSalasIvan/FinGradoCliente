@@ -56,6 +56,13 @@ class EquipoForm(forms.Form):
         def __init__(self, *args, **kwargs):
             super(EquipoForm, self).__init__(*args, **kwargs)
             
+            usauriosDisponibles = helper.obtener_usuarios_select()
+            self.fields["usuarios"] = forms.ChoiceField(
+                choices=usauriosDisponibles,
+                widget=forms.SelectMultiple,
+                required=True,
+            )
+            
             deportesDisponibles = helper.obtener_deportes_select()
             self.fields["deporte"] = forms.ChoiceField(
                 choices=deportesDisponibles,

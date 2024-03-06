@@ -9,6 +9,7 @@
     <h2>Nombre: {{ equipos.nombre }}</h2> 
     <h5>Capacidad: {{ equipos.capacidad }}</h5> 
     <h5>Deporte: {{ equipos.deporte.deporte }}</h5> 
+    <h6>Media Equipo: {{ equipos.media_equipo }}</h6> 
     <div class="mb-2">
         <form action = "{% url 'equipo_eliminar' equipos.id %}" method = "post"> 
             {% csrf_token %}

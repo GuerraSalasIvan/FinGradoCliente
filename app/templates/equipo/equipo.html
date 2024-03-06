@@ -6,6 +6,7 @@
 <div>
     <h2>Nombre: {{ equipo.nombre }}</h2> 
     <h2>Capacidad: {{ equipo.capacidad }}</h2> 
+    <h2>Media Equipo: {{ equipo.media_equipo }}</h2> 
     <a href= "{% url 'equipo_editar' equipo.id %}"><i class="fa-solid fa-pencil"></i></a>
 
     <form action = "{% url 'equipo_eliminar' equipo.id %}" method = "post"> 

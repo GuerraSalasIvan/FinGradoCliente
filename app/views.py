@@ -96,8 +96,8 @@ def crear_equipo(request):
             formulario = EquipoForm(request.POST)
             headers = {"Content-Type":"application/json"}
             
-            datos = formulario.data
-
+            datos = formulario.data.copy()
+            datos["usuario"] = datos.getlist("usuario")
             
             response = requests.post(
                 'http://127.0.0.1:8000/api/v1/equipos/crear',
