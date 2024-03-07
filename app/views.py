@@ -97,7 +97,7 @@ def crear_equipo(request):
             headers = {"Content-Type":"application/json"}
             
             datos = formulario.data.copy()
-            datos["usuario"] = datos.getlist("usuario")
+            datos["usuarios"] = datos.getlist("usuarios")
             
             response = requests.post(
                 'http://127.0.0.1:8000/api/v1/equipos/crear',
@@ -615,7 +615,7 @@ def registrar_usuario(request):
                             )
                     request.session["usuario"]=usuario
                     request.session["token"] = token_acceso
-                    redirect("indice")
+                    return redirect("indice")
                 else:
                     print(response.status_code)
                     response.raise_for_status()

@@ -1,15 +1,24 @@
 import requests
 
 class helper:
-    def obtener_lugares_select(request):
-        
-        response = requests.get('http://127.0.0.1:8000/api/v1/ubicacion',headers=headers)
+       
+    def obtener_lugares_select():
+        response = requests.get('http://127.0.0.1:8000/api/v1/ubicacion')
         lugares = response.json()
         
         lista_lugares = [("","Ninguno")]
         for lugar in lugares:
             lista_lugares.append((lugar['id'],lugar['calle']))
         return lista_lugares
+    
+    def obtener_colores_select():
+        response = requests.get('http://127.0.0.1:8000/api/v1/color')
+        colores = response.json()
+        
+        lista_colores = [("","Ninguno")]
+        for color in colores:
+            lista_colores.append((color['id'],color['color']))
+        return lista_colores
     
     def obtener_deportes_select():
         response = requests.get('http://127.0.0.1:8000/api/v1/deporte')

@@ -77,6 +77,21 @@ class EquipoForm(forms.Form):
                 required=True,
             )
             
+            coloresDisponibles1 = helper.obtener_colores_select()
+            self.fields["color_eq_1"] = forms.ChoiceField(
+                choices=coloresDisponibles1,
+                widget=forms.Select,
+                required=True,
+            )
+            
+            coloresDisponibles2 = helper.obtener_colores_select()
+            self.fields["color_eq_2"] = forms.ChoiceField(
+                choices=coloresDisponibles2,
+                widget=forms.Select,
+                required=True,
+            )
+            
+            
             
 class UbicacionForm(forms.Form):
     
