@@ -154,6 +154,47 @@ class PerfilPublicoForm(forms.Form):
                 required=True,
             )
             
+            
+class PartidoForm(forms.Form):
+    
+        fecha  = forms.DateTimeField(
+                                    label='Fecha y Hora del Partido',
+                                    widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}),
+                                    input_formats=['%Y-%m-%dT%H:%M'])
+        
+        puntos_local = forms.IntegerField(label="Puntos Local")
+        
+        puntos_visitante = forms.IntegerField(label="Puntos Visitante")
+               
+        def __init__(self, *args, **kwargs):
+            super(PartidoForm, self).__init__(*args, **kwargs)
+            
+            self.fields['color_local'] = 0
+            self.fields['color_visitante'] = 1
+            
+            ubicacionDisponibles = helper.obtener_lugares_select()
+            self.fields["ubicacion"] = forms.ChoiceField(
+                choices=ubicacionDisponibles,
+                widget=forms.Select,
+                required=True,
+            )
+            
+            equipoLocalDisponibles = helper.obtener_equipos_select()
+            self.fields["equipo_local"] = forms.ChoiceField(
+                choices=equipoLocalDisponibles,
+                widget=forms.Select,
+                required=False,
+            )
+            
+            equipoVisitanteDisponibles = helper.obtener_equipos_select()
+            self.fields["equipo_visitante"] = forms.ChoiceField(
+                choices=equipoVisitanteDisponibles,
+                widget=forms.Select,
+                required=False,
+            )
+            
+            
+            
 class EquipoActualizarNombreForm(forms.Form):
     nombre = forms.CharField(label="Nombre del Equipo",
                              required=True, 
@@ -161,7 +202,7 @@ class EquipoActualizarNombreForm(forms.Form):
                              help_text="100 caracteres como máximo")
     
 class UbicacionActualizarNombreForm(forms.Form):
-    nombre = forms.CharField(label="Nombre del PAbellon",
+    nombre = forms.CharField(label="Nombre del Pabellon",
                              required=True, 
                              max_length=200,
                              help_text="200 caracteres como máximo")

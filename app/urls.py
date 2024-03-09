@@ -15,6 +15,10 @@ urlpatterns = [
     path('equipo/crear', views.crear_equipo, name='crear_equipo'),
     path('equipo/eliminar/<int:equipo_id>',views.equipo_eliminar,name='equipo_eliminar'),
     
+    #------------------- PARTIDOS -------------------
+    path('partido/crear', views.crear_partido, name='crear_partido'),
+    
+    
     #------------------- UBICACION ------------------
     path('ubicacion/<int:ubicacion_id>', views.ubicacion_obtener, name='ubicacion_obtener'),
     

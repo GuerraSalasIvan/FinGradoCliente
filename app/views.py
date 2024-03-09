@@ -592,6 +592,50 @@ def perfil_publico_eliminar(request, perfil_publico_id):
 
 
 
+#------------------------- PARTIDOS -------------------------
+
+def crear_partido(request):
+    if (request.method == "POST"):
+        try:
+            formulario = PartidoForm(request.POST)
+            headers = {"Content-Type":"application/json"}
+            
+            formulario.color_local = "a"
+            formulario.color_visitante = "b"
+            
+            datos = formulario.data
+
+            response = requests.post(
+                'http://127.0.0.1:8000/api/v1/partido/crear',
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("indice")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'partido/crear.html',
+                            {"formulario":formulario})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+        
+    else:
+         formulario = PartidoForm(None)
+    return render(request, 'partido/crear.html',{"formulario":formulario})
+
+
+
 ################################### REGISTRATIONS ###################################
 def registrar_usuario(request):
     if (request.method == "POST"):
