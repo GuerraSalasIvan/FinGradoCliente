@@ -27,11 +27,11 @@ def mapa(request):
 
 def equipos_lista_api(request):
     headers = {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
-    response = requests.get(localURL+'/api/v1/equipos', headers=headers)
+    response = requests.get(baseURL+'/api/v1/equipos', headers=headers)
     equipos = response.json()
     
     headers = {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
-    response_partidos = requests.get(localURL+'/api/v1/partidos', headers=headers)
+    response_partidos = requests.get(baseURL+'/api/v1/partidos', headers=headers)
     partidos = response_partidos.json()
     
     
@@ -48,7 +48,7 @@ def equipos_lista_api(request):
 
 def ubicacion_lista_api(request):
     headers = {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
-    response = requests.get(localURL+'/api/v1/ubicacion', headers=headers)
+    response = requests.get(baseURL+'/api/v1/ubicacion', headers=headers)
     ubicaciones = response.json()
     
         # Crea el mapa
@@ -65,7 +65,7 @@ def ubicacion_lista_api(request):
 
 def perfil_publico_lista_api(request):
     headers = {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
-    response = requests.get(localURL+'/api/v1/perfil_publico', headers=headers)
+    response = requests.get(baseURL+'/api/v1/perfil_publico', headers=headers)
     perfil_publico = response.json()
     return render(request, 'perfil_publico/lista_perfil_publico_api.html',{'perfil_publico_mostrar':perfil_publico})
 
@@ -79,7 +79,7 @@ def equipo_busqueda_simple(request):
     if formulario.is_valid():
         headers = crear_cabecera()
         response = requests.get(
-            localURL+'/api/v1/busqueda/equipo_simple',
+            baseURL+'/api/v1/busqueda/equipo_simple',
             headers=headers,
             params=formulario.cleaned_data
         )
@@ -101,7 +101,7 @@ def buscar_avanzado_equipo(request):
         try:
             headers = crear_cabecera()
             response = requests.get(
-                localURL+'/api/v1/equipos/busqueda_avanzada',
+                baseURL+'/api/v1/equipos/busqueda_avanzada',
                 headers=headers,
                 params=formulario.data
             )
@@ -160,7 +160,7 @@ def crear_equipo(request):
             datos["usuario"] = datos.getlist("usuarios")
             
             response = requests.post(
-                localURL+'/api/v1/equipos/crear',
+                baseURL+'/api/v1/equipos/crear',
                 headers=headers,
                 data=json.dumps(datos)
             )
@@ -215,7 +215,7 @@ def equipo_editar(request, equipo_id):
             datos["usuarios"] = request.POST.getlist("usuarios")
             
             response = requests.put(
-                localURL+'/api/v1/equipos/editar/'+str(equipo_id),
+                baseURL+'/api/v1/equipos/editar/'+str(equipo_id),
                 headers=headers,
                 data=json.dumps(datos)
             )
@@ -261,7 +261,7 @@ def equipo_editar_nombre(request,equipo_id):
             headers = crear_cabecera()
             datos = request.POST.copy()
             response = requests.patch(
-                localURL+'/api/v1/equipos/editar/nombre/'+str(equipo_id),
+                baseURL+'/api/v1/equipos/editar/nombre/'+str(equipo_id),
                 headers=headers,
                 data=json.dumps(datos)
             )
@@ -292,7 +292,7 @@ def equipo_eliminar(request, equipo_id):
     try:
         headers = crear_cabecera()
         response = requests.delete(
-            localURL+'/api/v1/equipos/eliminar/'+str(equipo_id),
+            baseURL+'/api/v1/equipos/eliminar/'+str(equipo_id),
             headers=headers,
         )
         if(response.status_code == requests.codes.ok):
@@ -314,7 +314,7 @@ def buscar_avanzado_ubicacion(request):
         try:
             headers = crear_cabecera()
             response = requests.get(
-                localURL+'/api/v1/ubicacion/busqueda_avanzada',
+                baseURL+'/api/v1/ubicacion/busqueda_avanzada',
                 headers=headers,
                 params=formulario.data
             )
@@ -363,7 +363,7 @@ def crear_ubicacion(request):
 
             
             response = requests.post(
-                localURL+'/api/v1/ubicacion/crear',
+                baseURL+'/api/v1/ubicacion/crear',
                 headers=headers,
                 data=json.dumps(datos)
             )
@@ -417,7 +417,7 @@ def ubicacion_editar(request, ubicacion_id):
             datos["deporte"] = request.POST.getlist("deporte")
             
             response = requests.put(
-                localURL+'/api/v1/ubicacion/editar/'+str(ubicacion_id),
+                baseURL+'/api/v1/ubicacion/editar/'+str(ubicacion_id),
                 headers=headers,
                 data=json.dumps(datos)
             )
@@ -462,7 +462,7 @@ def ubicacion_editar_nombre(request,ubicacion_id):
             headers = crear_cabecera()
             datos = request.POST.copy()
             response = requests.patch(
-                localURL+'/api/v1/ubicacion/editar/nombre/'+str(ubicacion_id),
+                baseURL+'/api/v1/ubicacion/editar/nombre/'+str(ubicacion_id),
                 headers=headers,
                 data=json.dumps(datos)
             )
@@ -491,7 +491,7 @@ def ubicacion_eliminar(request, ubicacion_id):
     try:
         headers = crear_cabecera()
         response = requests.delete(
-            localURL+'/api/v1/ubicacion/eliminar/'+str(ubicacion_id),
+            baseURL+'/api/v1/ubicacion/eliminar/'+str(ubicacion_id),
             headers=headers,
         )
         if(response.status_code == requests.codes.ok):
@@ -513,7 +513,7 @@ def buscar_avanzado_perfil_publico(request):
         try:
             headers = crear_cabecera()
             response = requests.get(
-                localURL+'/api/v1/perfil_publico/busqueda_avanzada',
+                baseURL+'/api/v1/perfil_publico/busqueda_avanzada',
                 headers=headers,
                 params=formulario.data
             )
@@ -558,7 +558,7 @@ def crear_perfil_publico(request):
 
             
             response = requests.post(
-                localURL+'/api/v1/perfil_publico/crear',
+                baseURL+'/api/v1/perfil_publico/crear',
                 headers=headers,
                 data=json.dumps(datos)
             )
@@ -611,7 +611,7 @@ def perfil_publico_editar(request, perfil_publico_id):
             datos = request.POST.copy()
             
             response = requests.put(
-                localURL+'/api/v1/perfil_publico/editar/'+str(perfil_publico_id),
+                baseURL+'/api/v1/perfil_publico/editar/'+str(perfil_publico_id),
                 headers=headers,
                 data=json.dumps(datos)
             )
@@ -642,7 +642,7 @@ def perfil_publico_eliminar(request, perfil_publico_id):
     try:
         headers = crear_cabecera()
         response = requests.delete(
-            localURL+'/api/v1/perfil_publico/eliminar/'+str(perfil_publico_id),
+            baseURL+'/api/v1/perfil_publico/eliminar/'+str(perfil_publico_id),
             headers=headers,
         )
         if(response.status_code == requests.codes.ok):
@@ -681,7 +681,7 @@ def crear_partido(request):
             datos = formulario.data
 
             response = requests.post(
-                localURL+'/api/v1/partido/crear',
+                baseURL+'/api/v1/partido/crear',
                 headers=headers,
                 data=json.dumps(datos)
             )
@@ -721,7 +721,7 @@ def registrar_usuario(request):
                             "Content-Type": "application/json" 
                         }
                 response = requests.post(
-                    localURL+'/api/v1/registrar/usuario',
+                    baseURL+'/api/v1/registrar/usuario',
                     headers=headers,
                     data=json.dumps(formulario.cleaned_data)
                 )
@@ -770,7 +770,7 @@ def login(request):
             
           
             headers = {'Authorization': 'Bearer '+token_acceso} 
-            response = requests.get(localURL+'/api/v1/usuario/token/'+token_acceso,headers=headers)
+            response = requests.get(baseURL+'/api/v1/usuario/token/'+token_acceso,headers=headers)
             usuario = response.json()
             request.session["usuario"] = usuario
             

@@ -6,7 +6,7 @@ localURL = "http://127.0.0.1:8000"
 class helper:
        
     def obtener_lugares_select():
-        response = requests.get(localURL+'/api/v1/ubicacion')
+        response = requests.get(baseURL+'/api/v1/ubicacion')
         lugares = response.json()
         
         lista_lugares = [("","Ninguno")]
@@ -15,7 +15,7 @@ class helper:
         return lista_lugares
     
     def obtener_colores_select():
-        response = requests.get(localURL+'/api/v1/color')
+        response = requests.get(baseURL+'/api/v1/color')
         colores = response.json()
         
         lista_colores = [("","Ninguno")]
@@ -24,7 +24,7 @@ class helper:
         return lista_colores
     
     def obtener_deportes_select():
-        response = requests.get(localURL+'/api/v1/deporte')
+        response = requests.get(baseURL+'/api/v1/deporte')
         deportes = response.json()
         lista_deportes = [("","Ninguno")]
         for deporte in deportes:
@@ -32,7 +32,7 @@ class helper:
         return lista_deportes
     
     def obtener_usuarios_select():
-        response = requests.get(localURL+'/api/v1/usuarios')
+        response = requests.get(baseURL+'/api/v1/usuarios')
         usuarios = response.json()
         lista_usuarios = [("","Ninguno")]
         for usuario in usuarios:
@@ -40,7 +40,7 @@ class helper:
         return lista_usuarios
     
     def obtener_ligas_select():
-        response = requests.get(localURL+'/api/v1/ligas')
+        response = requests.get(baseURL+'/api/v1/ligas')
         ligas = response.json()
         lista_ligas = []
         cont = 1
@@ -50,7 +50,7 @@ class helper:
         return lista_ligas
     
     def obtener_equipos_select():
-        response = requests.get(localURL+'/api/v1/equipos')
+        response = requests.get(baseURL+'/api/v1/equipos')
         equipos = response.json()
         lista_equipos = [("","Ninguno")]
         for equipo in equipos:
@@ -58,32 +58,32 @@ class helper:
         return lista_equipos
     
     def obtener_equipo(id):
-        response = requests.get(localURL+'/api/v1/equipos/'+str(id))
+        response = requests.get(baseURL+'/api/v1/equipos/'+str(id))
         equipo = response.json()
         return equipo
     
     def obtener_rel_equi_ubi():
-        response = requests.get(localURL+'/api/v1/rel_equi_ubi')
+        response = requests.get(baseURL+'/api/v1/rel_equi_ubi')
         rel_equi_ubi = response.json()
         return rel_equi_ubi
     
     def obtener_ubicacion(id):
-        response = requests.get(localURL+'/api/v1/ubicacion/'+str(id))
+        response = requests.get(baseURL+'/api/v1/ubicacion/'+str(id))
         ubicacion = response.json()
         return ubicacion
     
     def obtener_partido(id):
-        response = requests.get(localURL+'/api/v1/partido/'+str(id))
+        response = requests.get(baseURL+'/api/v1/partido/'+str(id))
         partido = response.json()
         return partido
     
     def obtener_perfil_publico(id):
-        response = requests.get(localURL+'/api/v1/perfil_publico/'+str(id))
+        response = requests.get(baseURL+'/api/v1/perfil_publico/'+str(id))
         perfil_publico = response.json()
         return perfil_publico
     
     def obtener_token_session(usuario,password):
-        token_url = localURL+'/oauth2/token/'
+        token_url = baseURL+'/oauth2/token/'
         data = {
             'grant_type': 'password',
             'username': usuario,
