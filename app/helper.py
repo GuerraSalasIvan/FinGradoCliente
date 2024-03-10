@@ -59,10 +59,20 @@ class helper:
         equipo = response.json()
         return equipo
     
+    def obtener_rel_equi_ubi():
+        response = requests.get('http://127.0.0.1:8000/api/v1/rel_equi_ubi')
+        rel_equi_ubi = response.json()
+        return rel_equi_ubi
+    
     def obtener_ubicacion(id):
         response = requests.get('http://127.0.0.1:8000/api/v1/ubicacion/'+str(id))
         ubicacion = response.json()
         return ubicacion
+    
+    def obtener_partido(id):
+        response = requests.get('http://127.0.0.1:8000/api/v1/partido/'+str(id))
+        partido = response.json()
+        return partido
     
     def obtener_perfil_publico(id):
         response = requests.get('http://127.0.0.1:8000/api/v1/perfil_publico/'+str(id))

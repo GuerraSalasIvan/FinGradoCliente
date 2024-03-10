@@ -18,9 +18,54 @@
             </button> 
         </form>
     </div>
-    
-    <br>
-
+</div>
 {% endfor %}
+
+<br>
+<br>
+<h3>Calendario de Partidos:</h3>
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Lun</th>
+        <th>Mar</th>
+        <th>Mié</th>
+        <th>Jue</th>
+        <th>Vie</th>
+        <th>Sáb</th>
+        <th>Dom</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for semana in calendario %}
+        <tr>
+          {% for dia in semana %}
+            {% if dia == 0 %}
+              <td></td>
+            {% else %}
+              {% with partido=partidos_dict.dia %}
+                <td class="day-cell"{% if dia in fechas_partidos %} style="background-color: #ffcccb;"{% endif %}>
+                  {{ dia }}  {# Usa .day para obtener el día del objeto de fecha #}
+                  {% if partido %}
+                    <p>Local: {{ partido.equipo_local.nombre }}</p>
+                    <p>Visitante: {{ partido.equipo_visitante.nombre }}</p>
+                  {% endif %}
+                </td>
+              {% endwith %}
+            {% endif %}
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+
+
+
+
+
+  
+  
 
 {% endblock contenido %}

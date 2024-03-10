@@ -165,12 +165,20 @@ class PartidoForm(forms.Form):
         puntos_local = forms.IntegerField(label="Puntos Local")
         
         puntos_visitante = forms.IntegerField(label="Puntos Visitante")
+        
+        color_local = forms.CharField(label='Color local',
+                                      initial=2,
+                                      widget=forms.HiddenInput(),
+                                      required=False)
+        
+        color_visitante = forms.CharField(label='Color Visitante',
+                                      initial=1,
+                                      widget=forms.HiddenInput(),
+                                      required=False)
                
         def __init__(self, *args, **kwargs):
             super(PartidoForm, self).__init__(*args, **kwargs)
-            
-            self.fields['color_local'] = 0
-            self.fields['color_visitante'] = 1
+
             
             ubicacionDisponibles = helper.obtener_lugares_select()
             self.fields["ubicacion"] = forms.ChoiceField(

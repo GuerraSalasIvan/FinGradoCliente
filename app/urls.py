@@ -2,9 +2,11 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     
     path('', views.equipos_lista_api, name='indice'),
+    path('mapa/', views.mapa, name='mapa'),
     
     #-------------------- EQUIPOS -------------------
     path('equipo/<int:equipo_id>', views.equipo_obtener, name='equipo_obtener'),
@@ -17,11 +19,10 @@ urlpatterns = [
     
     #------------------- PARTIDOS -------------------
     path('partido/crear', views.crear_partido, name='crear_partido'),
-    
+    path('partido/<int:partido_id>', views.partido_obtener, name='partido_obtener'),
     
     #------------------- UBICACION ------------------
     path('ubicacion/<int:ubicacion_id>', views.ubicacion_obtener, name='ubicacion_obtener'),
-    
     path('ubicacion/buscar_avanzado', views.buscar_avanzado_ubicacion, name='buscar_avanzado_ubicacion'),
     path('ubicacion/crear', views.crear_ubicacion, name='crear_ubicacion'),
     path('ubicacion/editar/<int:ubicacion_id>',views.ubicacion_editar,name='ubicacion_editar'),

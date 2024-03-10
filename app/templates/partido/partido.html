@@ -1,0 +1,36 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %} 
+
+{% load bootstrap_icons %}
+<div style="display: flex; flex-direction: column; align-items: center;">
+    <h2>Fecha: {{ partido.fecha }}</h2>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+        <div style="flex-basis: 30%;">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <h3><strong>Equipo local:</strong> {{ partido.equipo_local.nombre }}</h3> 
+                <h4>Color del equipo local: {{ partido.color_local.color }}</h4>
+            </div>
+        </div>
+
+        <div style="flex-basis: 30%; text-align: center;">
+            <h1>VS</h1>
+        </div>
+
+        <div style="flex-basis: 30%;">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <h3><strong>Equipo visitante:</strong> {{ partido.equipo_visitante.nombre }}</h3> 
+                <h4>Color del equipo visitante: {{ partido.color_visitante.color }}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+{{ mapa_html|safe }}
+
+
+
+{% endblock contenido %} 

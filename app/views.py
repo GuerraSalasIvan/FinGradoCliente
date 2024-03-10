@@ -1,21 +1,65 @@
 import requests
+import folium
 from django.core import serializers
 from django.shortcuts import render
 from django.shortcuts import render,redirect
 from .forms import *
 import json
+import calendar
+from datetime import datetime
+
+
+
+def mapa(request):
+    # Crear un mapa Folium
+    m = folium.Map(location=[51.509, -0.1], zoom_start=10)
+
+    # Añadir un marcador
+    folium.Marker([51.509, -0.1], popup='Punto de interés').add_to(m)
+
+    # Obtener el HTML del mapa
+    mapa_html = m._repr_html_()
+
+    # Renderizar la plantilla con el mapa
+    return render(request, 'ubicacion/mapa.html', {'mapa_html': mapa_html})
 
 def equipos_lista_api(request):
     headers = {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
     response = requests.get('http://127.0.0.1:8000/api/v1/equipos', headers=headers)
     equipos = response.json()
-    return render(request, 'equipo/lista_equipos_api.html',{'equipos_mostrar':equipos})
+    
+    headers = {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
+    response_partidos = requests.get('http://127.0.0.1:8000/api/v1/partidos', headers=headers)
+    partidos = response_partidos.json()
+    
+    
+    now = datetime.now()
+    mes_actual = now.month
+    anio_actual = now.year
+    
+    calendario = calendar.monthcalendar(anio_actual, mes_actual)
+    fechas_partidos = {datetime.strptime(partido["fecha"], "%Y-%m-%dT%H:%M:%S%z").day for partido in partidos}
+    partidos_dict = {datetime.strptime(partido["fecha"], "%Y-%m-%dT%H:%M:%S%z").date(): partido for partido in partidos}
+
+    
+    return render(request, 'equipo/lista_equipos_api.html', {'equipos_mostrar': equipos, 'calendario': calendario, 'fechas_partidos': fechas_partidos, "partidos_dict":partidos_dict, "partidos":partidos})
 
 def ubicacion_lista_api(request):
     headers = {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
     response = requests.get('http://127.0.0.1:8000/api/v1/ubicacion', headers=headers)
-    ubicacion = response.json()
-    return render(request, 'ubicacion/lista_ubicacion_api.html',{'ubicacion_mostrar':ubicacion})
+    ubicaciones = response.json()
+    
+        # Crea el mapa
+    mapa = folium.Map(location=[37.332094,-5.956230], zoom_start=12)
+    
+    for ubicacion in ubicaciones:
+        folium.Marker([ubicacion['lat'], ubicacion['lng']], popup=ubicacion['nombre'],
+        ).add_to(mapa)
+
+    mapa_html = mapa._repr_html_()
+
+    return render(request, 'ubicacion/lista_ubicacion_api.html', {'ubicacion_mostrar': ubicaciones, 'mapa_html': mapa_html})
+    
 
 def perfil_publico_lista_api(request):
     headers = {'Authorization': 'Bearer NOfsyzrO8gTjmWFg5dR0eoSB0UsPYI'}
@@ -88,7 +132,21 @@ def buscar_avanzado_equipo(request):
 
 def equipo_obtener(request, equipo_id):
     equipo = helper.obtener_equipo(equipo_id)
-    return render (request, 'equipo/equipo.html',{"equipo":equipo})
+    rel_equi_ubi = helper.obtener_rel_equi_ubi()
+    
+    contador_ubicaciones = {}
+
+    for rel in rel_equi_ubi:
+        if rel['equipos'] == equipo_id:
+            ubicacion_id = rel['ubicacion']
+            contador_ubicaciones[ubicacion_id] = contador_ubicaciones.get(ubicacion_id, 0) + 1
+
+    ubicacion_maxima = max(contador_ubicaciones, key=lambda k: contador_ubicaciones[k])
+    
+    ubi_fav = helper.obtener_ubicacion(ubicacion_maxima)
+    
+    return render (request, 'equipo/equipo.html',{"equipo":equipo, "ubi_fav":ubi_fav})
+
 
 def crear_equipo(request):
     if (request.method == "POST"):
@@ -286,7 +344,12 @@ def buscar_avanzado_ubicacion(request):
 
 def ubicacion_obtener(request, ubicacion_id):
     ubicacion = helper.obtener_ubicacion(ubicacion_id)
-    return render (request, 'ubicacion/ubicacion.html',{"ubicacion":ubicacion})
+    mapa = folium.Map(location=[37.332094,-5.956230], zoom_start=12)
+    folium.Marker([ubicacion['lat'], ubicacion['lng']], popup=ubicacion['nombre']).add_to(mapa)
+
+    # Obtener el HTML del mapa
+    mapa_html = mapa._repr_html_()
+    return render (request, 'ubicacion/ubicacion.html',{"ubicacion":ubicacion , "mapa_html":mapa_html})
 
 def crear_ubicacion(request):
     if (request.method == "POST"):
@@ -593,15 +656,25 @@ def perfil_publico_eliminar(request, perfil_publico_id):
 
 
 #------------------------- PARTIDOS -------------------------
+def partido_obtener(request, partido_id):
+    partido = helper.obtener_partido(partido_id)
+    
+    ubicacion = helper.obtener_ubicacion(partido['ubicacion'])
+    
+    mapa = folium.Map(location=[37.332094,-5.956230], zoom_start=12)
+    folium.Marker([ubicacion['lat'], ubicacion['lng']], popup=ubicacion['nombre']).add_to(mapa)
+
+    # Obtener el HTML del mapa
+    mapa_html = mapa._repr_html_()
+    
+    return render (request, 'partido/partido.html',{"partido":partido, 'mapa_html': mapa_html})
 
 def crear_partido(request):
+
     if (request.method == "POST"):
         try:
             formulario = PartidoForm(request.POST)
             headers = {"Content-Type":"application/json"}
-            
-            formulario.color_local = "a"
-            formulario.color_visitante = "b"
             
             datos = formulario.data
 
